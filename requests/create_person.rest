@@ -1,0 +1,16 @@
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Kobe Bryant",
+  "number": "1235-485-156"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Kobe Bryant",
+  "number": "1235-485-156"
+}
