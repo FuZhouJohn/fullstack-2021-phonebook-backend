@@ -1,0 +1,6 @@
+{
+  "name": "fullstack-2021-phonebook-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}
