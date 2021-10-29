@@ -57,10 +57,12 @@ app.post("/api/persons", (request, response, next) => {
 
 app.get("/info", (request, response) => {
   const now = new Date();
-  response.send(`
-        <p>Phonebook has info for ${persons.length} people</p>
-        <p>${now}</p>
+  Person.count({}).then((count) => {
+    response.send(`
+      <p>Phonebook has info for ${count} people</p>
+      <p>${now}</p>
     `);
+  });
 });
 
 app.delete("/api/persons/:id", (request, response) => {
@@ -89,6 +91,18 @@ app.put("/api/persons/:id", (request, response, next) => {
     .then((updatedPerson) => {
       if (updatedPerson) {
         response.json(updatedPerson);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => next(error));
+});
+
+app.get("/api/persons/:id", (request, response, next) => {
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) {
+        response.json(person);
       } else {
         response.status(404).end();
       }
