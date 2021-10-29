@@ -57,6 +57,25 @@ app.get("/api/persons", (request, response) => {
   });
 });
 
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: "name or number missing",
+    });
+  }
+
+  const person = new Person({
+    name: body.name,
+    number: body.number,
+  });
+
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  });
+});
+
 app.get("/info", (request, response) => {
   const now = new Date();
   response.send(`
@@ -65,52 +84,24 @@ app.get("/info", (request, response) => {
     `);
 });
 
-app.get("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((p) => p.id === id);
-  if (person) {
-    response.json(person);
-  } else {
-    response.status(404).end();
-  }
-});
+// app.get("/api/persons/:id", (request, response) => {
+//   const id = Number(request.params.id);
+//   const person = persons.find((p) => p.id === id);
+//   if (person) {
+//     response.json(person);
+//   } else {
+//     response.status(404).end();
+//   }
+// });
 
-app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((p) => p.id === id);
-  if (person) {
-    persons = persons.filter((p) => p.id !== id);
-  }
-  response.sendStatus(204);
-});
-
-const generateId = () => {
-  const min = Math.ceil(5);
-  const max = Math.floor(1000000);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
-app.post("/api/persons", (request, response) => {
-  const person = request.body;
-
-  if (!person.name || !person.number) {
-    return response.status(400).json({
-      error: "name or number missing",
-    });
-  }
-
-  const existedPerson = persons.find((p) => p.name === person.name);
-  if (existedPerson) {
-    return response.status(400).json({
-      error: "name must be unique",
-    });
-  }
-
-  person.id = generateId();
-  persons = persons.concat(person);
-
-  response.json(person);
-});
+// app.delete("/api/persons/:id", (request, response) => {
+//   const id = Number(request.params.id);
+//   const person = persons.find((p) => p.id === id);
+//   if (person) {
+//     persons = persons.filter((p) => p.id !== id);
+//   }
+//   response.sendStatus(204);
+// });
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
