@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "deploy": "git push heroku master"
+    "deploy": "git push && git push heroku master",
+    "logs:prod": "heroku logs --tail"
   },
   "devDependencies": {
     "nodemon": "^2.0.14"
