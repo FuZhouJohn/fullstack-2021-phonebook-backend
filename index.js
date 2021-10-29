@@ -84,6 +84,19 @@ app.get("/info", (request, response) => {
     `);
 });
 
+app.delete("/api/persons/:id", (request, response) => {
+  Person.findByIdAndRemove(request.params.id)
+    .then(() => {
+      response.status(204).end();
+    })
+    .catch((error) => {
+      console.log(error.message);
+      response.status(400).send({
+        error: "malformatted id",
+      });
+    });
+});
+
 // app.get("/api/persons/:id", (request, response) => {
 //   const id = Number(request.params.id);
 //   const person = persons.find((p) => p.id === id);
@@ -92,15 +105,6 @@ app.get("/info", (request, response) => {
 //   } else {
 //     response.status(404).end();
 //   }
-// });
-
-// app.delete("/api/persons/:id", (request, response) => {
-//   const id = Number(request.params.id);
-//   const person = persons.find((p) => p.id === id);
-//   if (person) {
-//     persons = persons.filter((p) => p.id !== id);
-//   }
-//   response.sendStatus(204);
 // });
 
 const PORT = process.env.PORT;
